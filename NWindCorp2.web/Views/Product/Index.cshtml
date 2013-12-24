@@ -1,0 +1,36 @@
+﻿@model NWindCorp2.bus.Entities.Category
+@{
+    ViewBag.Title = "Index";
+}
+<h2>Products for @Model.Name</h2>
+
+@Html.ActionLink("Create", "Create", new{id = Model.Id})
+
+<ul>
+    @foreach (var product in Model.Products)
+    {
+        <li  @((TempData["modified"] != null && (int)TempData["modified"] == product.Id)?"class=modified": String.Empty)
+            >@product.Name
+            <br />
+            @Html.ActionLink("Edit", "Edit", new{id=product.Id}) |            <form method="post" style="display:inline">
+            @Html.ActionLink("Delete", "Delete", new { id = product.Id, categoryId = product.CategoryId }, new { @class = "post-link" })
+            </form>
+        </li>
+    }
+</ul>
+
+@section scripts{
+    <script>
+        $(".post-link").click(function () {
+            var form = $(this).parents("form");
+            form.attr("action", $(this).attr("href"));
+            form.submit();
+            return false;
+        });
+
+        setTimeout(function () {
+            $("li.modified").removeClass("modified");
+        }, 2000);
+
+    </script>
+}
